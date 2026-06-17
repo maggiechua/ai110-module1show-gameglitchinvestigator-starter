@@ -14,9 +14,14 @@ Document at least 3 bugs you found. Add rows as needed.
 
 | Input | Expected Behavior | Actual Behavior | Console Output / Error |
 |-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+| clicking on show hint checkbox when it is currently unchecked | displays a hint modal | no modal appears | none |
+| pressing enter to submit guess | submits guess and user receives timely feedback | no feedback | None |
+| guess of 2 | displays hint telling user to 'go higher' | displays hint telling user to 'go lower' when secret number is 7 | None |
+| guess of 9 | displays hint telling user to 'go lower' | displays hint telling user to 'go higher' when secret number is 7 | None |
+| clicking on new game button | removes the modal telling the user they won the game and need to start a new game | does not remove the modal | None |
+| submitting a guess for a new game | allows a user to submit a guess and provides feedback | page refreshes, but no feedback is provided | None |
+| user selects a different difficulty level | if the secret number is outside the defined range, its value is reassigned to one within the range | the secret number remains unchanged even if its outside the defined range | None |
+| user submits the n-1 guess attempt  | user can use up to the pre-defined number of attempts based on difficulty level | attempts made vs. attempts remaining are not the same and ends the game early for the user | None 
 
 ---
 

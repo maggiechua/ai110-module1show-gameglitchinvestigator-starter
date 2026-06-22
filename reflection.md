@@ -5,9 +5,12 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 ## 1. What was broken when you started?
 
 - What did the game look like the first time you ran it?
+
 At first glance, the game had a straightforward UI, but when I tried to play the game, several bugs were apparent. I found that the hints were backwards, pressing enter to submit a guess did not work, and that I was unable to start a new game. After encountering those bugs, I decided the second time around, I would test out trying to use up all of my attempts and experimenting with the settings.
+
 - List at least two concrete bugs you noticed at the start  
   (for example: "the hints were backwards").
+
 The two concrete bugs I noticed at the start was that the hints were backwards. For instance, if the secret number is 55, when I submitted a guess greater than the number, it would display feedback telling me to guess higher and vice versa if the guess was lower than 55. The second bug occurred when a user correctly guesses the secret number and decides to start a new game. While the developer debug info updates to a new secret number, the modal telling the user they have won continues to persist and the user is unable to submit guesses for the new game. 
 
 **Bug Reproduction Log**
@@ -35,9 +38,13 @@ I used Claude as my collaborative partner on this assignment.
 
 I told Claude that the user is unable to start a new game when the current game has ended. It correctly identified that the issue originated from the session state status not being reset to "playing," when the new game logic is run. I verified the result by playing two additional games, the first where I guessed the secret number and one where I was unable to guess it before my attempts ran out. Then I clicked on the 'New Game' button. 
 
+![alt text](image-2.png)
+In the initial code, when the difficulty level is changed, the secret number is not changed, so that it is within the pre-defined range. In addition, if a user submits a guess that is outside the range, there is no error handling that notifies the user and it still counts the submission as an attempt. I verified the result manually by entering values outside of the pre-defined range. In addition, I had Claude write tests for me that I checked and ran to ensure that it demonstrated the correct behavior. 
+
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
 
-While using Claude to address the new game bug, it correctly identified that the secret number provided did not follow the ranges prescribed by difficulty level. It tried to fix this by adding a line of code that retrieved the range values of the selected difficulty level, generating a secret number that was within the range, and updating the session state secret number value. However, unless the user selects the difficulty level before selecting a new game, the bug will persist as a new secret number is not chosen. 
+![alt text](image-1.png)
+The number of attempts on the sidebar did not match what was displayed to the user on the main page. While the sidebar displayed the total attempts granted to the user based on the difficulty level, the one shown on the main page was always one less. A quick perusal of the code showed that the attempts variable was automatically set to one even if a user has not submitted a guess, while the displayed 'remaining attempts' was calculated using the attempts subtracted from the total attempts. My prompt to Claude pointed out this discrepancy, but it did not understand what I was conveying and just set the attempts value to 1 when a new game is started. A quick manual check demonstrated that the visual discrepancy still showed and that when I played the game, I was only able to submit n-1 attempts. 
 
 ---
 
@@ -45,10 +52,11 @@ While using Claude to address the new game bug, it correctly identified that the
 
 - How did you decide whether a bug was really fixed?
 
-I decided that a bug was fixed only after checking that that the expected behavior occurred during manual testing and if applicable, through pytest. 
+I decided that a bug was fixed only after checking that that the expected behavior occurred during manual testing and if applicable, through pytest. I tried to account for all the variations I could think of after a bugfix, and if I found any issues I would start with reviewing the code changes, looking for issues in the logic, and then prompting Claude to improve the existing solution. 
 
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
+- Describe at least one test you ran (manual or using pytest) and what it showed you about your code.
+
+One test that I ran was checking that the secret number in the developer's debugging window was within the predefined range set for the corresponding difficulty level. The default state was the game set to Normal. Often times, the secret number would be greater than 50, so I would change the difficulty level to Hard (as the range is 1 to 50), then check if the secret number value was updated to something within that range. Then this process was repeated for Easy (the range is 1 to 20). I ran two checks: a new game was started, then a user changes the difficulty level and mid-game, a user decides to switch the difficulty level. While the secret number value was updated to one within the provided ranges, it revealed that the attempts were not reset, as the session state did not treat it as a new game. That indicated to me that my approach towards handling the attempts bug was not comprehensive enough. 
 
 - Did AI help you design or understand any tests? How?
 

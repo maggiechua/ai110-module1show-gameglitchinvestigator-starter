@@ -34,6 +34,9 @@ if "current_difficulty" not in st.session_state:
 if difficulty != st.session_state.current_difficulty:
     st.session_state.secret = random.randint(low, high)
     st.session_state.current_difficulty = difficulty
+    st.session_state.attempts = 0
+    st.session_state.score = 0
+    st.session_state.history = []
 
 if "secret" not in st.session_state:
     st.session_state.secret = random.randint(low, high)
@@ -78,8 +81,10 @@ with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
 if new_game:
-    st.session_state.attempts = 0
     st.session_state.status = "playing"
+    st.session_state.attempts = 0
+    st.session_state.score = 0
+    st.session_state.history = []
     st.session_state.secret = random.randint(low, high)
     st.success("New game started.")
     st.rerun()
@@ -92,16 +97,14 @@ if st.session_state.status != "playing":
     st.stop()
 
 if submit:
-    st.session_state.attempts += 1
-
     ok, guess_int, err = parse_guess(raw_guess, low, high)
 
     # FIX: guess out of range does not subtract from remaining attempts
     if not ok:
         st.session_state.history.append(raw_guess)
-        st.session_state.attempts -= 1
         st.error(err)
     else:
+        st.session_state.attempts += 1
         st.session_state.history.append(guess_int)
 
         if st.session_state.attempts % 2 == 0:

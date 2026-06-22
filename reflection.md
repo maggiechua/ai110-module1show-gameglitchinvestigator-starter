@@ -36,7 +36,7 @@ I used Claude as my collaborative partner on this assignment.
 
 ![alt text](image.png)
 
-I told Claude that the user is unable to start a new game when the current game has ended. It correctly identified that the issue originated from the session state status not being reset to "playing," when the new game logic is run. I verified the result by playing two additional games, the first where I guessed the secret number and one where I was unable to guess it before my attempts ran out. Then I clicked on the 'New Game' button. 
+I told Claude that the user is unable to start a new game when the current game has ended. Before prompting Claude, I decided to investigate the code myself and realized that the session state status was set to "win" after the game ended and was not reset to "playing," so subsequent logic could not run. Then, I prompted Claude to find the issue and propose a fix. It correctly identified that the issue originated from the session state status not being reset to "playing," when the new game logic is run. I manually verified the result by playing two additional games, the first where I guessed the secret number and one where I was unable to guess it before my attempts ran out. Then I clicked on the 'New Game' button. 
 
 ![alt text](image-2.png)
 In the initial code, when the difficulty level is changed, the secret number is not changed, so that it is within the pre-defined range. In addition, if a user submits a guess that is outside the range, there is no error handling that notifies the user and it still counts the submission as an attempt. I verified the result manually by entering values outside of the pre-defined range. In addition, I had Claude write tests for me that I checked and ran to ensure that it demonstrated the correct behavior. 
@@ -61,6 +61,7 @@ One test that I ran was checking that the secret number in the developer's debug
 - Did AI help you design or understand any tests? How?
 
 I used Claude to help me design tests. I would write a prompt concisely explaining the bug, the expected behavior, and the tests to check this behavior. Afterwards, I would review the code suggestions within the files, run pytest, and then do a manual check. If there were additional issues, I would go back to the code and walk through the logic. 
+
 ---
 
 ## 4. What did you learn about Streamlit and state?
@@ -80,7 +81,7 @@ Whenever I was prompting AI to solve a bug, I made sure to identify what the iss
 
 - What is one thing you would do differently next time you work with AI on a coding task?
 
-I think the next time I work with AI on a coding task, I want to preemptively determine my own answer to a bugfix. While I sometimes had something in mind before I submitted my prompt, I'm afraid of cognitive offloading that obstructs learning. It doesn't necessarily involve coding the entire solution in advance, but to consider the structure of the solution (i.e. what data structure am I using, is the main problem addressing state management, what edge cases do I need to account for). 
+I think the next time I work with AI on a coding task, I want to preemptively determine my own answer to a bugfix. While I sometimes had something in mind before I submitted my prompt, I'm afraid of cognitive offloading that obstructs learning. It doesn't necessarily involve coding the entire solution in advance, but to consider the structure of the solution (i.e. what data structure am I using, is the main problem addressing state management, what edge cases do I need to account for).
 
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
 
